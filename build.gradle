@@ -1,0 +1,40 @@
+plugins {
+    id "org.springframework.boot" version "2.5.3" apply false
+}
+
+allprojects {
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+
+    dependencyManagement {
+        overriddenByDependencies = false
+
+        dependencies {
+            dependency 'io.projectreactor.tools:blockhound-junit-platform:1.0.4.RELEASE'
+
+            dependency 'io.rest-assured:rest-assured:4.3.3'
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    targetCompatibility = sourceCompatibility = 15
+
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter'
+
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    test {
+
+        useJUnitPlatform()
+        jvmArgs '-XX:+AllowRedefinitionToAddDeleteMethods'
+    }
+}
